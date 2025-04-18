@@ -1,5 +1,3 @@
-import { Card, CardContent, Typography } from "@mui/material";
-
 export default function AudioOutputStep() {
   return (
     <>
@@ -13,16 +11,11 @@ export default function AudioOutputStep() {
   );
 }
 
-function AudioPlayer({ src, title }: { src: string; title?: string }) {
+function AudioPlayer({ src }: { src: string }) {
   return (
-    <Card variant="outlined">
-      <CardContent>
-        {title && <Typography variant="h6">{title}</Typography>}
-        <audio controls style={{ width: "100%" }}>
-          <source src={src} type="audio/mpeg" />
-          Your browser does not support the audio element.
-        </audio>
-      </CardContent>
-    </Card>
+    <audio controls style={{ width: "100%" }}>
+      <source src={src} type="audio/mpeg" />
+      Your browser does not support the audio element.
+    </audio>
   );
 }
