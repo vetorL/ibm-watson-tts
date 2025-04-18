@@ -44,6 +44,30 @@ const theme = createTheme({
         },
       },
     },
+    MuiAutocomplete: {
+      styleOverrides: {
+        paper: {
+          backgroundColor: "#ffffff", // Set the dropdown background color
+          color: "#000000", // Set the text color for the dropdown
+          boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)", // Optional: add a subtle shadow to the dropdown
+        },
+        option: {
+          color: "#000000", // Set the text color for the options
+          "&:hover": {
+            backgroundColor: "#f5f5f5", // Hover background color for options
+          },
+          "&.Mui-focused": {
+            backgroundColor: "#eeeeee", // Focused option background color
+          },
+        },
+        inputRoot: {
+          color: "#000000", // Text color inside the input
+        },
+        input: {
+          color: "#000000", // Input text color
+        },
+      },
+    },
   },
 });
 

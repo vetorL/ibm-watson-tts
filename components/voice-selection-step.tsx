@@ -66,6 +66,7 @@ export default function VoiceSelectionStep({
           setLanguage(newVal);
           setSelectedVoice(null); // Reset selected voice
         }}
+        sx={{ color: "white" }}
       />
 
       <Autocomplete
@@ -76,6 +77,7 @@ export default function VoiceSelectionStep({
         )}
         value={selectedVoice}
         onChange={(e, newVal) => setSelectedVoice(newVal)}
+        sx={{ color: "white" }}
       />
     </>
   );
