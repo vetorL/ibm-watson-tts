@@ -9,6 +9,7 @@ interface StepperControlsProps {
   handleBack: () => void;
   handleNext: () => void;
   isStepValid: boolean;
+  loading: boolean;
 }
 
 export default function StepperControls({
@@ -17,6 +18,7 @@ export default function StepperControls({
   handleBack,
   handleNext,
   isStepValid,
+  loading,
 }: StepperControlsProps) {
   return (
     <div className="flex gap-4 items-center flex-row justify-between w-full">
@@ -91,6 +93,7 @@ export default function StepperControls({
             opacity: 0.5,
           },
         }}
+        loading={loading}
       >
         <NavigateNextIcon />
         Next

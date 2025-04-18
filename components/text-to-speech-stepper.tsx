@@ -22,6 +22,7 @@ export default function TextToSpeechStepper() {
   const [text, setText] = useState("");
   const [language, setLanguage] = useState<string | null>("");
   const [voices, setVoices] = useState<Voice[]>([]); // Store the voices
+  const [loading, setLoading] = useState(false);
 
   // Function to fetch voices from the server
   const fetchVoices = async (apikey: string, serviceUrl: string) => {
@@ -77,7 +78,10 @@ export default function TextToSpeechStepper() {
 
     // If advancing from step 0 (Credentials) to step 1, fetch voices
     if (activeStep === 0) {
+      setLoading(true);
       const success = await fetchVoices(apiKey, serviceUrl);
+      setLoading(false);
+      // If fetching voices fails, show an alert and do not proceed
       if (!success) {
         alert("Failed to fetch voices. Please check your credentials.");
         return;
@@ -154,6 +158,7 @@ export default function TextToSpeechStepper() {
         handleBack={handleBack}
         handleNext={handleNext}
         isStepValid={isStepValid}
+        loading={loading}
       />
     </div>
   );
