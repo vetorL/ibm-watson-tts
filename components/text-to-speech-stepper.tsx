@@ -5,7 +5,7 @@ import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Stepper from "@mui/material/Stepper";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import AudioOutputStep from "./audio-output-step";
 import CredentialsStep from "./credentials-step";
 import TextInputStep from "./text-input-step";
@@ -59,7 +59,22 @@ export default function TextToSpeechStepper() {
     (voice) => voice.gender === gender && voice.language === language
   );
 
+  const isStepValid = useMemo(() => {
+    switch (activeStep) {
+      case 0:
+        return apiKey.trim() !== "" && serviceUrl.trim() !== "";
+      case 1:
+        return !!language && !!selectedVoice;
+      case 2:
+        return text.trim() !== "" && !!selectedVoice;
+      default:
+        return true;
+    }
+  }, [activeStep, apiKey, serviceUrl, language, selectedVoice, text]);
+
   const handleNext = () => {
+    if (!isStepValid) return;
+
     if (activeStep < steps.length - 1) {
       setActiveStep((prev) => prev + 1);
     } else {
@@ -119,28 +134,37 @@ export default function TextToSpeechStepper() {
         {activeStep === 3 && <AudioOutputStep />}
       </div>
       <div className="flex gap-4 items-center flex-row justify-between w-full">
-        <a
-          className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] 
-          transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] 
-          hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full 
-          sm:w-auto md:w-[158px] cursor-pointer"
+        <button
+          type="button"
           onClick={handleBack}
-          rel="noopener noreferrer"
+          disabled={activeStep === 0}
+          className="rounded-full border border-solid border-black/[.08] 
+                     dark:border-white/[.145] transition-colors 
+                     flex items-center justify-center 
+                     hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] 
+                     hover:border-transparent font-medium 
+                     text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 
+                     w-full sm:w-auto md:w-[158px] 
+                     disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Back
-        </a>
+        </button>
 
-        <a
-          className="rounded-full border border-solid border-transparent transition-colors 
-          flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] 
-          dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto
-          cursor-pointer"
+        <button
+          type="button"
           onClick={handleNext}
-          rel="noopener noreferrer"
+          disabled={!isStepValid}
+          className="rounded-full border border-solid border-transparent 
+                     transition-colors flex items-center justify-center 
+                     bg-foreground text-background gap-2 
+                     hover:bg-[#383838] dark:hover:bg-[#ccc] 
+                     font-medium text-sm sm:text-base 
+                     h-10 sm:h-12 px-4 sm:px-5 sm:w-auto 
+                     disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <NavigateNextIcon className="dark:invert" width={20} height={20} />
           Next
-        </a>
+        </button>
       </div>
     </div>
   );
