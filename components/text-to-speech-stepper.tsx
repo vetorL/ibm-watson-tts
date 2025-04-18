@@ -2,6 +2,7 @@
 
 import { Voice } from "@/lib/types";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import { Button } from "@mui/material";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Stepper from "@mui/material/Stepper";
@@ -134,37 +135,56 @@ export default function TextToSpeechStepper() {
         {activeStep === 3 && <AudioOutputStep />}
       </div>
       <div className="flex gap-4 items-center flex-row justify-between w-full">
-        <button
-          type="button"
+        <Button
+          variant="outlined"
           onClick={handleBack}
           disabled={activeStep === 0}
-          className="rounded-full border border-solid border-black/[.08] 
-                     dark:border-white/[.145] transition-colors 
-                     flex items-center justify-center 
-                     hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] 
-                     hover:border-transparent font-medium 
-                     text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 
-                     w-full sm:w-auto md:w-[158px] 
-                     disabled:opacity-50 disabled:cursor-not-allowed"
+          sx={{
+            borderRadius: "9999px",
+            textTransform: "none",
+            height: { xs: 40, sm: 48 },
+            px: { xs: 4, sm: 5 },
+            width: { xs: "100%", sm: "auto", md: 158 },
+            fontSize: { xs: "0.875rem", sm: "1rem" },
+            backgroundColor: "white",
+            color: "text.primary",
+            borderColor: "rgba(0, 0, 0, 0.08)",
+            "&:hover": {
+              backgroundColor: "#f5f5f5", // a soft gray hover color
+              borderColor: "transparent",
+            },
+          }}
         >
           Back
-        </button>
+        </Button>
 
-        <button
-          type="button"
+        <Button
+          variant="contained"
           onClick={handleNext}
           disabled={!isStepValid}
-          className="rounded-full border border-solid border-transparent 
-                     transition-colors flex items-center justify-center 
-                     bg-foreground text-background gap-2 
-                     hover:bg-[#383838] dark:hover:bg-[#ccc] 
-                     font-medium text-sm sm:text-base 
-                     h-10 sm:h-12 px-4 sm:px-5 sm:w-auto 
-                     disabled:opacity-50 disabled:cursor-not-allowed"
+          sx={{
+            borderRadius: "9999px",
+            textTransform: "none",
+            height: { xs: 40, sm: 48 },
+            px: { xs: 4, sm: 5 },
+            fontSize: { xs: "0.875rem", sm: "1rem" },
+            width: { xs: "100%", sm: "auto" },
+            display: "flex",
+            alignItems: "center",
+            gap: 1,
+            bgcolor: "text.primary",
+            color: "white",
+            "&:hover": {
+              bgcolor: "#383838",
+            },
+            "&.Mui-disabled": {
+              opacity: 0.5,
+            },
+          }}
         >
-          <NavigateNextIcon className="dark:invert" width={20} height={20} />
+          <NavigateNextIcon />
           Next
-        </button>
+        </Button>
       </div>
     </div>
   );
