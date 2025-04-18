@@ -13,35 +13,6 @@ import VoiceSelectionStep from "./voice-selection-step";
 
 const steps = ["Credentials", "Voice Selection", "Text Input", "Audio Output"];
 
-const mockVoices: Voice[] = [
-  {
-    name: "es-ES_LauraV3Voice",
-    language: "es-ES",
-    gender: "female",
-    description:
-      "Laura: Castilian Spanish (español castellano) female voice. Dnn technology.",
-    customizable: true,
-    supported_features: {
-      custom_pronunciation: true,
-      voice_transformation: false,
-    },
-    url: "https://api.us-east.text-to-speech.watson.cloud.ibm.com/instances/.../v1/voices/es-ES_LauraV3Voice",
-  },
-  {
-    name: "en-US_MichaelV3Voice",
-    language: "en-US",
-    gender: "male",
-    description: "Michael: American English male voice. Dnn technology.",
-    customizable: true,
-    supported_features: {
-      custom_pronunciation: true,
-      voice_transformation: true,
-    },
-    url: "https://api.us-east.text-to-speech.watson.cloud.ibm.com/instances/.../v1/voices/en-US_MichaelV3Voice",
-  },
-  // ... add more voices as needed
-];
-
 export default function TextToSpeechStepper() {
   const [activeStep, setActiveStep] = useState(0);
   const [apiKey, setApiKey] = useState("");
@@ -50,14 +21,43 @@ export default function TextToSpeechStepper() {
   const [selectedVoice, setSelectedVoice] = useState<Voice | null>(null);
   const [text, setText] = useState("");
   const [language, setLanguage] = useState<string | null>("");
+  const [voices, setVoices] = useState<Voice[]>([]); // Store the voices
+
+  // Function to fetch voices from the server
+  const fetchVoices = async (apikey: string, serviceUrl: string) => {
+    try {
+      const response = await fetch("/api/voices", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ apikey, serviceUrl }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Fetched voices:", data);
+        setVoices(data);
+        return true;
+      } else {
+        console.error("Error fetching voices:", response.statusText);
+        return false;
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      return false;
+    }
+  };
 
   const availableLanguages = Array.from(
-    new Set(mockVoices.map((voice) => voice.language))
+    new Set(Array.isArray(voices) ? voices.map((voice) => voice.language) : [])
   );
 
-  const filteredVoices = mockVoices.filter(
-    (voice) => voice.gender === gender && voice.language === language
-  );
+  const filteredVoices = Array.isArray(voices)
+    ? voices.filter(
+        (voice) => voice.gender === gender && voice.language === language
+      )
+    : [];
 
   const isStepValid = useMemo(() => {
     switch (activeStep) {
@@ -72,8 +72,17 @@ export default function TextToSpeechStepper() {
     }
   }, [activeStep, apiKey, serviceUrl, language, selectedVoice, text]);
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (!isStepValid) return;
+
+    // If advancing from step 0 (Credentials) to step 1, fetch voices
+    if (activeStep === 0) {
+      const success = await fetchVoices(apiKey, serviceUrl);
+      if (!success) {
+        alert("Failed to fetch voices. Please check your credentials.");
+        return;
+      }
+    }
 
     if (activeStep < steps.length - 1) {
       setActiveStep((prev) => prev + 1);

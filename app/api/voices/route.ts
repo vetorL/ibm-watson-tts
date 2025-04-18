@@ -25,7 +25,7 @@ export async function POST(request: Request) {
 
     // Fetch voices
     const voices = await textToSpeech.listVoices();
-    return NextResponse.json(voices.result);
+    return NextResponse.json(voices.result.voices);
   } catch (err) {
     console.error("IBM Watson error:", err);
     return NextResponse.json(
