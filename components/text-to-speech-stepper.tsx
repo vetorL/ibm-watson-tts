@@ -49,13 +49,28 @@ export default function TextToSpeechStepper() {
   const [gender, setGender] = useState<"male" | "female">("female");
   const [selectedVoice, setSelectedVoice] = useState<Voice | null>(null);
   const [text, setText] = useState("");
+  const [language, setLanguage] = useState<string | null>("");
+
+  const availableLanguages = Array.from(
+    new Set(mockVoices.map((voice) => voice.language))
+  );
+
+  const filteredVoices = mockVoices.filter(
+    (voice) => voice.gender === gender && voice.language === language
+  );
 
   const handleNext = () => {
     if (activeStep < steps.length - 1) {
       setActiveStep((prev) => prev + 1);
     } else {
-      // final submit action
-      console.log({ apiKey, serviceUrl, gender, selectedVoice, text });
+      console.log({
+        apiKey,
+        serviceUrl,
+        gender,
+        language,
+        selectedVoice,
+        text,
+      });
     }
   };
 
@@ -84,11 +99,12 @@ export default function TextToSpeechStepper() {
           <VoiceSelectionStep
             gender={gender}
             setGender={setGender}
-            filteredVoices={mockVoices.filter(
-              (voice) => voice.gender === gender
-            )}
+            filteredVoices={filteredVoices}
             selectedVoice={selectedVoice}
             setSelectedVoice={setSelectedVoice}
+            availableLanguages={availableLanguages}
+            setLanguage={setLanguage}
+            language={language}
           />
         )}
 

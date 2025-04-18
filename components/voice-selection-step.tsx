@@ -11,6 +11,9 @@ interface VoiceSelectionStepProps {
   filteredVoices: Voice[];
   selectedVoice: Voice | null;
   setSelectedVoice: (voice: Voice | null) => void;
+  availableLanguages: string[];
+  setLanguage: (language: string | null) => void;
+  language: string | null;
 }
 
 export default function VoiceSelectionStep({
@@ -19,6 +22,9 @@ export default function VoiceSelectionStep({
   filteredVoices,
   selectedVoice,
   setSelectedVoice,
+  availableLanguages,
+  setLanguage,
+  language,
 }: VoiceSelectionStepProps) {
   return (
     <>
@@ -48,6 +54,19 @@ export default function VoiceSelectionStep({
         <FormControlLabel value="female" control={<Radio />} label="Female" />
         <FormControlLabel value="male" control={<Radio />} label="Male" />
       </RadioGroup>
+
+      <Autocomplete
+        options={availableLanguages}
+        getOptionLabel={(option) => option}
+        renderInput={(params) => (
+          <TextField {...params} label="Choose a language" variant="outlined" />
+        )}
+        value={language}
+        onChange={(e, newVal) => {
+          setLanguage(newVal);
+          setSelectedVoice(null); // Reset selected voice
+        }}
+      />
 
       <Autocomplete
         options={filteredVoices}
