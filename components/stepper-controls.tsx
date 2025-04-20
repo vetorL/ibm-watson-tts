@@ -1,6 +1,7 @@
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { Button } from "@mui/material";
+import ReplayIcon from "@mui/icons-material/Replay";
 
 interface StepperControlsProps {
   activeStep: number;
@@ -73,7 +74,7 @@ export default function StepperControls({
       <Button
         variant="contained"
         onClick={handleNext}
-        disabled={!isStepValid}
+        disabled={!isStepValid && activeStep !== 3}
         sx={{
           borderRadius: "9999px",
           textTransform: "none",
@@ -95,8 +96,17 @@ export default function StepperControls({
         }}
         loading={loading}
       >
-        <NavigateNextIcon />
-        Next
+        {activeStep === 3 ? (
+          <>
+            <ReplayIcon />
+            Generate another
+          </>
+        ) : (
+          <>
+            <NavigateNextIcon />
+            Next
+          </>
+        )}
       </Button>
     </div>
   );
