@@ -1,12 +1,16 @@
-export default function AudioOutputStep() {
+export default function AudioOutputStep({
+  audioUrl,
+}: {
+  audioUrl: string | null;
+}) {
   return (
     <>
       <ul className="list-inside text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
         <li className="mb-2 tracking-[-.01em]">
-          - Audio generated succesfully!
+          - Audio generated successfully!
         </li>
       </ul>
-      <AudioPlayer src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" />
+      {audioUrl && <AudioPlayer src={audioUrl} />}
     </>
   );
 }

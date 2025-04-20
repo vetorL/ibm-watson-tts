@@ -23,6 +23,7 @@ export default function TextToSpeechStepper() {
   const [language, setLanguage] = useState<string | null>("");
   const [voices, setVoices] = useState<Voice[]>([]); // Store the voices
   const [loading, setLoading] = useState(false);
+  const [audioUrl, setAudioUrl] = useState<string | null>(null);
 
   // Function to fetch voices from the server
   const fetchVoices = async (apikey: string, serviceUrl: string) => {
@@ -74,11 +75,8 @@ export default function TextToSpeechStepper() {
       }
 
       const audioBlob = await response.blob();
-      const audioUrl = URL.createObjectURL(audioBlob);
-
-      // Optionally, set this URL somewhere to play/download in AudioOutputStep
-      const audioElement = new Audio(audioUrl);
-      audioElement.play();
+      const url = URL.createObjectURL(audioBlob);
+      setAudioUrl(url);
 
       return true;
     } catch (error) {
@@ -197,7 +195,7 @@ export default function TextToSpeechStepper() {
           />
         )}
 
-        {activeStep === 3 && <AudioOutputStep />}
+        {activeStep === 3 && <AudioOutputStep audioUrl={audioUrl} />}
       </div>
       <StepperControls
         activeStep={activeStep}
