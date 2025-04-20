@@ -50,6 +50,43 @@ export default function TextToSpeechStepper() {
     }
   };
 
+  const generateSpeech = async (
+    apikey: string,
+    serviceUrl: string
+  ): Promise<boolean> => {
+    try {
+      const response = await fetch("/api/text-to-speech", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          apikey,
+          serviceUrl,
+          text,
+          voice: selectedVoice?.name,
+        }),
+      });
+
+      if (!response.ok) {
+        console.error("Text-to-speech request failed:", response.statusText);
+        return false;
+      }
+
+      const audioBlob = await response.blob();
+      const audioUrl = URL.createObjectURL(audioBlob);
+
+      // Optionally, set this URL somewhere to play/download in AudioOutputStep
+      const audioElement = new Audio(audioUrl);
+      audioElement.play();
+
+      return true;
+    } catch (error) {
+      console.error("Error generating speech:", error);
+      return false;
+    }
+  };
+
   const availableLanguages = Array.from(
     new Set(Array.isArray(voices) ? voices.map((voice) => voice.language) : [])
   );
@@ -84,6 +121,17 @@ export default function TextToSpeechStepper() {
       // If fetching voices fails, show an alert and do not proceed
       if (!success) {
         alert("Failed to fetch voices. Please check your credentials.");
+        return;
+      }
+    }
+
+    // If advancing from step 2 (Text Input) to step 3 (Audio Output), call text to speech API
+    if (activeStep === 2) {
+      setLoading(true);
+      const success = await generateSpeech(apiKey, serviceUrl);
+      setLoading(false);
+      if (!success) {
+        alert("Failed to synthesize audio.");
         return;
       }
     }
