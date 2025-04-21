@@ -108,22 +108,34 @@ export default function TextToSpeechStepper() {
     }
   }, [activeStep, apiKey, serviceUrl, language, selectedVoice, text]);
 
+  const resetForNewGeneration = () => {
+    setGender("female");
+    setSelectedVoice(null);
+    setText("");
+    setLanguage("");
+    setAudioUrl(null);
+    setActiveStep(1); // Volta para seleção de voz
+  };
+
   const handleNext = async () => {
     if (!isStepValid) return;
 
-    // If advancing from step 0 (Credentials) to step 1, fetch voices
+    // Skip all async logic if we're regenerating
+    if (activeStep === 3) {
+      resetForNewGeneration();
+      return;
+    }
+
     if (activeStep === 0) {
       setLoading(true);
       const success = await fetchVoices(apiKey, serviceUrl);
       setLoading(false);
-      // If fetching voices fails, show an alert and do not proceed
       if (!success) {
         alert("Failed to fetch voices. Please check your credentials.");
         return;
       }
     }
 
-    // If advancing from step 2 (Text Input) to step 3 (Audio Output), call text to speech API
     if (activeStep === 2) {
       setLoading(true);
       const success = await generateSpeech(apiKey, serviceUrl);
@@ -134,18 +146,7 @@ export default function TextToSpeechStepper() {
       }
     }
 
-    if (activeStep < steps.length - 1) {
-      setActiveStep((prev) => prev + 1);
-    } else {
-      console.log({
-        apiKey,
-        serviceUrl,
-        gender,
-        language,
-        selectedVoice,
-        text,
-      });
-    }
+    setActiveStep((prev) => prev + 1);
   };
 
   const handleBack = () => setActiveStep((prev) => prev - 1);
