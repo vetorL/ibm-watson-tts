@@ -26,6 +26,8 @@ export default function CredentialsStep({
         id="outlined-basic"
         label="API key"
         variant="outlined"
+        helperText="You can find your API key in the IBM Cloud console."
+        type="password"
         fullWidth
         value={apiKey}
         onChange={(e) => setApiKey(e.target.value)}
@@ -34,6 +36,7 @@ export default function CredentialsStep({
         id="outlined-basic"
         label="Service URL"
         variant="outlined"
+        helperText="You can find the Service URL in the IBM Cloud console."
         fullWidth
         value={serviceUrl}
         onChange={(e) => setServiceUrl(e.target.value)}
