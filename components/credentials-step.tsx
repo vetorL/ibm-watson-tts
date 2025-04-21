@@ -13,6 +13,20 @@ export default function CredentialsStep({
   serviceUrl,
   setServiceUrl,
 }: CredentialsStepProps) {
+  const helperText = (
+    <span>
+      You can find this in the{" "}
+      <a
+        href="https://cloud.ibm.com/catalog/services/text-to-speech"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="underline hover:text-black"
+      >
+        IBM Cloud console<span aria-hidden>↗</span>
+      </a>
+    </span>
+  );
+
   return (
     <>
       <ul className="list-inside text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
@@ -23,20 +37,22 @@ export default function CredentialsStep({
       </ul>
 
       <TextField
-        id="outlined-basic"
+        id="api-key"
         label="API key"
         variant="outlined"
-        helperText="You can find your API key in the IBM Cloud console."
+        helperText={helperText}
         type="password"
         fullWidth
         value={apiKey}
         onChange={(e) => setApiKey(e.target.value)}
+        sx={{ mb: 0.5 }}
       />
+
       <TextField
-        id="outlined-basic"
+        id="service-url"
         label="Service URL"
         variant="outlined"
-        helperText="You can find the Service URL in the IBM Cloud console."
+        helperText={helperText}
         fullWidth
         value={serviceUrl}
         onChange={(e) => setServiceUrl(e.target.value)}
