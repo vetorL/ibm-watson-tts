@@ -73,7 +73,24 @@ export default function VoiceSelectionStep({
         options={filteredVoices}
         getOptionLabel={(option) => option.name}
         renderInput={(params) => (
-          <TextField {...params} label="Choose a voice" variant="outlined" />
+          <TextField
+            {...params}
+            label="Choose a voice"
+            variant="outlined"
+            helperText={
+              <span>
+                Audio samples can be found{" "}
+                <a
+                  href="https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-voices#language-voices-expressive"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline text-slate-700 hover:text-black"
+                >
+                  here<span aria-hidden>↗</span>
+                </a>
+              </span>
+            }
+          />
         )}
         value={selectedVoice}
         onChange={(e, newVal) => setSelectedVoice(newVal)}
