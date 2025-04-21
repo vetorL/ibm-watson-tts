@@ -84,4 +84,48 @@ Pronto! O áudio estará disponível para reprodução ou download.
 
 #### Utilizando a API diretamente
 
-Você também pode consumir os endpoints da aplicação diretamente por meio de requisições HTTP. Utilize ferramentas como Postman ou cURL para realizar chamadas manuais.
+Você também pode consumir os endpoints da aplicação diretamente por meio de requisições HTTP. Abaixo está um exemplo de como utilizar a ferramenta **cURL** para fazer uma requisição `POST` ao endpoint de conversão de texto em fala.
+
+**- Exemplo de uso com cURL**
+
+_Endpoint:_
+
+```
+POST http://localhost:3000/api/text-to-speech
+```
+
+_Comando:_
+
+```bash
+curl -X POST http://localhost:3000/api/text-to-speech \
+-H "Content-Type: application/json" \
+-d '{
+    "apikey": "SUA_API_KEY_AQUI",
+    "serviceUrl": "https://api.us-south.text-to-speech.watson.cloud.ibm.com",
+    "text": "Olá, este é um teste de voz com o IBM Watson!",
+    "voice": "pt-BR_IsabelaV3Voice"
+}' --output audio-output.wav
+```
+
+Substitua o valor de `apikey` pela sua chave de acesso da IBM Cloud.
+
+O campo `voice` deve conter um identificador de voz válido disponibilizado pela API do IBM Watson (como `pt-BR_IsabelaV3Voice`, `en-US_AllisonV3Voice`, etc).
+
+O campo `text` é o conteúdo que será transformado em áudio.
+
+**- Resposta**
+
+A resposta será um arquivo de áudio no formato `audio/wav`, salvo localmente com o nome `audio-output.wav`.
+
+```http
+HTTP/1.1 200 OK
+Content-Type: audio/wav
+Content-Disposition: attachment; filename="audio-output.wav"
+```
+
+**- Erros comuns**
+
+| Código | Motivo                                    |
+| ------ | ----------------------------------------- |
+| 400    | `apikey` ou `serviceUrl` ausente          |
+| 500    | Erro interno ao tentar sintetizar o áudio |
