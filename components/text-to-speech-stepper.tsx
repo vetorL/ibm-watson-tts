@@ -7,6 +7,7 @@ import Stepper from "@mui/material/Stepper";
 import { useMemo, useState } from "react";
 import AudioOutputStep from "./audio-output-step";
 import CredentialsStep from "./credentials-step";
+import HelpModal from "./help-modal"; // adjust path accordingly
 import StepperControls from "./stepper-controls";
 import TextInputStep from "./text-input-step";
 import VoiceSelectionStep from "./voice-selection-step";
@@ -24,6 +25,11 @@ export default function TextToSpeechStepper() {
   const [voices, setVoices] = useState<Voice[]>([]); // Store the voices
   const [loading, setLoading] = useState(false);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const [helpOpen, setHelpOpen] = useState(false);
+
+  const handleHelp = () => {
+    setHelpOpen(true);
+  };
 
   // Function to fetch voices from the server
   const fetchVoices = async (apikey: string, serviceUrl: string) => {
@@ -151,11 +157,6 @@ export default function TextToSpeechStepper() {
 
   const handleBack = () => setActiveStep((prev) => prev - 1);
 
-  const handleHelp = () => {
-    // Show a help modal or any help-related behavior here
-    alert("Here is some help information.");
-  };
-
   return (
     <div className="flex flex-col gap-4 justify-center w-full">
       <Stepper activeStep={activeStep}>
@@ -207,6 +208,8 @@ export default function TextToSpeechStepper() {
         isStepValid={isStepValid}
         loading={loading}
       />
+
+      <HelpModal open={helpOpen} onClose={() => setHelpOpen(false)} />
     </div>
   );
 }
