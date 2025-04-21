@@ -24,11 +24,13 @@ export async function POST(request: Request) {
       voice: voice,
     };
 
-    const { result: audioStream } = await textToSpeech.synthesize(synthesizeParams);
+    const { result: audioStream } = await textToSpeech.synthesize(
+      synthesizeParams
+    );
 
     const chunks: Buffer[] = [];
 
-    for await (const chunk of audioStream as any) {
+    for await (const chunk of audioStream as NodeJS.ReadableStream) {
       chunks.push(typeof chunk === "string" ? Buffer.from(chunk) : chunk);
     }
 
