@@ -19,8 +19,15 @@ export default function TextInputStep({
           - Write the text to be turned into audio
         </li>
         <li className="mb-2 tracking-[-.01em] text-gray-500">
-          Note: you chose <i><b>{selectedVoice?.name}</b></i> as the voice, make sure
-          to write in <i><b>{selectedVoice?.language}</b></i> for the best results.
+          Note: you chose{" "}
+          <i>
+            <b>{selectedVoice?.name}</b>
+          </i>{" "}
+          as the voice, make sure to write in{" "}
+          <i>
+            <b>{selectedVoice?.language}</b>
+          </i>{" "}
+          for the best results.
         </li>
       </ul>
 
@@ -33,6 +40,7 @@ export default function TextInputStep({
         rows={5}
         value={text}
         onChange={(e) => setText(e.target.value)}
+        helperText={`Number of chars: ${text.length}`}
       />
     </>
   );
