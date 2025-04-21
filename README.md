@@ -2,6 +2,8 @@
 
 Aplicação web para interagir com o IBM Watson Text to Speech.
 
+[Clique aqui para ver a demonstração em vídeo!](https://youtu.be/ykSs1IXw4Qs?si=aiuBe_No-GW2nSla)
+
 ## Requisitos do sistema
 
 Antes de começar, certifique-se de que seu sistema atenda aos seguintes requisitos:
